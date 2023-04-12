@@ -66,7 +66,7 @@ a1 = 1:0.2:4
 %%% zeors/ones
 a1 = zeros(3,2)
 
-a1 = ones(3,2)
+a1 = -ones(3,2)
 
 %%%If you need to dynamically find matrix dimmensions, use
 %%%"size(var,dimension)" where var is the variable and dimension is if you
@@ -86,7 +86,7 @@ a1 = 4;
 a2 = 2;
 
 %%% use different operators here (+,-,*,/)
-a3 = a1 + a2
+a3 = a1 / a2
 
 a1 = [1 2]
 a2 = [3 4]
@@ -125,7 +125,7 @@ a1 >= 3
 a1 > 3
 
 %%% You can use these logical outputs as indicies
-a1(a1 == 3)
+a1(a1 ~= 3)
 
 %% Date functions
 clear all
@@ -136,7 +136,7 @@ clear all
 
 %%% "datevec" converts a serial time stamp into a date vector
 %%% [year, month, day, hour, minute, second]
-a1 = datevec(7000)
+a1 = datevec(700.378)
 
 %%% "datenum" converts a date vector into a serial time stamp.
 a2 = datenum(a1)
@@ -187,6 +187,7 @@ end
 %%% paramaters
 %%% USe if/elseif/else statements
 for i = 1:10
+    i
     if i == 2
         a1 = 2
     elseif i == 3
@@ -194,8 +195,8 @@ for i = 1:10
     elseif i == 4
         a3 = 4
     else
-
     end
+    pause
 end
 
 %% General Plotting
@@ -251,6 +252,9 @@ fsolve(@(x) fun(x,3),x0)
 %%% integral(function,lower limit, upper limit)
 integral(@(x) fun(x,3),0,10)
 
+
+fun(1:10,3)
+
 %%% Numerical differentiation / gradiant
 %%%Finds the gradiant across an array
 gradient(fun(1:10,3))
@@ -265,4 +269,4 @@ fun([10 10],1)
 x0 = [1 2];
 %%%Find where this equation is zero
 %%% fsolve(function,initial gues x0)
-fsolve(@(x) fun(x,3),x0)
+[x,fval,exitflag,output,jacobian] = fsolve(@(x) fun(x,3),x0)

@@ -1,0 +1,9 @@
+# Ignore MATLAB autosave and CPLEX log files#
+*.asv
+*.log
+*.mat
+
+%%%Ignoring data files that are too large to upload to the free website  
+/Data
+
+*.mdmp
