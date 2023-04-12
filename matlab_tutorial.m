@@ -270,3 +270,15 @@ x0 = [1 2];
 %%%Find where this equation is zero
 %%% fsolve(function,initial gues x0)
 [x,fval,exitflag,output,jacobian] = fsolve(@(x) fun(x,3),x0)
+
+%% Adding a path
+clc, clear all, close all
+%%%add a path so that Matlab can find in files that are not in the current
+%%%working direcoty or a directory already specified under "add path"
+addpath('H:\Classes\MAE_219P\UCI_MAE219P_2023\Data')
+
+%%% Old clunky reading method
+data_xlsread = xlsread('82384_33.93_-118.22_2020.csv');
+
+%%% Updated better method, spits out a "table" data type
+data_readtable = readtable('82384_33.93_-118.22_2020.csv');
