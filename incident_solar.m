@@ -26,6 +26,7 @@ lat = 33.7;
 
 %% Brute force angles
 p = zeros(length(t),1);
+p_avail = [];
 solar_dec = [];
 for i = 1:length(t)
     %%% Hour angle
@@ -57,11 +58,17 @@ az_i(i,1) = az;
 
 
 angles(i,:) = [alpha solar_dec zen az tand(az)];
-% angles(i,:) = [cosd(eta)*cosd(zen) sind(eta)*sind(zen)*cosd(az-zeta)];
-    if (cosd(eta)*cosd(zen) + sind(eta)*sind(zen)*cosd(az-zeta)) > 0
-        p(i,1) = 1*(cosd(eta)*cosd(zen) + sind(eta)*sind(zen)*cosd(az-zeta));
 
+p_val = (1.353.*0.7^((1/cosd(zen))^0.678)) .*...
+    (cosd(eta)*cosd(zen) + sind(eta)*sind(zen)*cosd(az-zeta));
+
+if isreal(p_val) && p_val > 0%(cosd(eta)*cosd(zen) + sind(eta)*sind(zen)*cosd(az-zeta)) > 0
+        p(i,1) = p_val;
+        
     end
+% (1.353.*0.7^((1/cosd(zen))^0.678)) 
+
+p_avail(i,:) = [(1/cosd(zen))^0.678];
 
 end
 
