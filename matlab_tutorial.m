@@ -282,3 +282,5 @@ data_xlsread = xlsread('82384_33.93_-118.22_2020.csv');
 
 %%% Updated better method, spits out a "table" data type
 data_readtable = readtable('82384_33.93_-118.22_2020.csv');
+
+dni = table2array(data_readtable.DNI);
