@@ -25,36 +25,43 @@ zeta = 0;
 lat = 33.7;
 
 %% Brute force angles
-p = [];
+p = zeros(length(t),1);
 solar_dec = [];
 for i = 1:length(t)
     %%% Hour angle
-    alpha = (2*pi/86400)*(rem(t(i),1)*86400-43200); %%%[radians]
-
+    % alpha = (2*pi/86400)*(rem(t(i),1)*86400-43200); %%%[radians]
+    alpha = (360/24)*(rem(t(i),1)*24 - 12); %Degrees
     %%% Solar Declination
     solar_dec = 23.44*sind(360*(t(i)-80)/365.25); %%%[ Degrees]
 
     %%% Zenith angle - %%%DOUBLE CHECK SLIDES%%%
-    zen = acosd(sind(solar_dec)*sind(lat) + cosd(solar_dec)*cosd(lat)*cos(alpha)); %%%[Degrees]
+    zen = acosd(sind(solar_dec)*sind(lat) + cosd(solar_dec)*cosd(lat)*cosd(alpha)); %%%[Degrees]
 
     %%%Azimuthal angle
-    az = atand(sin(alpha)/(sind(lat)*cos(alpha)-cosd(lat)*tand(solar_dec)));
+    az = atand(sind(alpha)./...
+        (sind(lat)*cosd(alpha)-cosd(lat)*tand(solar_dec)));
+
+
 
     %%% Adding logic to az angle
-    if alpha >= 0 && tand(az) >= 0
+    if alpha > 0 && tand(az) >= 0
         az = az + 180;
-    elseif alpha >= 0 && tand(az) < 0
+    elseif alpha > 0 && tand(az) <= 0
         az = az + 360;
     elseif alpha < 0 && tand(az) >= 0
         % az = az;
     else
         az = az + 180;
     end
+az_i(i,1) = az;
 
-if (cosd(eta)*cosd(zen) + sind(eta)*sind(zen)*cosd(az-zeta)) > 0
-p(i,1) = 1*(cosd(eta)*cosd(zen) + sind(eta)*sind(zen)*cosd(az-zeta));
 
-end
+angles(i,:) = [alpha solar_dec zen az tand(az)];
+% angles(i,:) = [cosd(eta)*cosd(zen) sind(eta)*sind(zen)*cosd(az-zeta)];
+    if (cosd(eta)*cosd(zen) + sind(eta)*sind(zen)*cosd(az-zeta)) > 0
+        p(i,1) = 1*(cosd(eta)*cosd(zen) + sind(eta)*sind(zen)*cosd(az-zeta));
+
+    end
 
 end
 
