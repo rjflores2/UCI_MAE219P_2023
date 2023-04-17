@@ -31,7 +31,7 @@ solar_dec = [];
 for i = 1:length(t)
     %%% Hour angle
     % alpha = (2*pi/86400)*(rem(t(i),1)*86400-43200); %%%[radians]
-    alpha = (360/24)*(rem(t(i),1)*24 - 12); %Degrees
+    alpha = (360/24)*(rem(t(i),1)*24 - 12); % t in hours [Degrees] 
     %%% Solar Declination
     solar_dec = 23.44*sind(360*(t(i)-80)/365.25); %%%[ Degrees]
 
@@ -62,13 +62,10 @@ angles(i,:) = [alpha solar_dec zen az tand(az)];
 p_val = (1.353.*0.7^((1/cosd(zen))^0.678)) .*...
     (cosd(eta)*cosd(zen) + sind(eta)*sind(zen)*cosd(az-zeta));
 
-if isreal(p_val) && p_val > 0%(cosd(eta)*cosd(zen) + sind(eta)*sind(zen)*cosd(az-zeta)) > 0
-        p(i,1) = p_val;
-        
-    end
-% (1.353.*0.7^((1/cosd(zen))^0.678)) 
+if isreal(p_val) && p_val > 0
+    p(i) = p_val;
+end
 
-p_avail(i,:) = [(1/cosd(zen))^0.678];
 
 end
 
