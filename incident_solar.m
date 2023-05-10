@@ -15,14 +15,18 @@ d_end = 18/24; %%%Sunset is at 6pm
 
 %% Set up test matrix
 %%%Tilt tests
-eta_range = [0:30:90];
+eta_range = [0:5:90];
+% eta_range = [28:.1:31];
 % eta_range = 60;
 %%%Azimuthal tests
-zeta_range = [0:90:270];
+% zeta_range = [0:90:270];
+% zeta_range = [179:.1:181];
+zeta_range = [90 270];
 % zeta_range = 0;
 
 %%%Pre allocating
 test_matrix = zeros(length(eta_range)*length(zeta_range),2);
+
 
 %%%Setting up test matrix
 idx = 1;
@@ -32,6 +36,10 @@ for i = 1:length(eta_range)
         idx = idx + 1;
     end
 end
+
+
+% test_matrix = [29 180
+%     0 0];
 %% Test Loop
 for ii = 1:size(test_matrix,1)
 
@@ -92,6 +100,33 @@ for ii = 1:size(test_matrix,1)
     end
 
     %% Recording values
-    p_rec(ii,1) = sum(p);
+    %     p_rec(ii,1) = sum(p);
+    p_rec(:,ii) = p;
 end
-plot(p)
+%%
+% [p_max,p_max_idx] = max(p_rec);
+% test_matrix(p_max_idx,:)
+% plot(p)
+
+%% finding optimal angles
+
+%%%Opt_anlge[eta zeta]
+opt_angle = zeros(size(p_rec,1),4);
+
+for ii = 1:size(p_rec,1)
+    %%%Only look when the sun is up
+    if sum(p_rec(ii,:)) > 0
+      [p_max,p_max_idx] =  max(p_rec(ii,:));
+      
+      opt_angle(ii,:) = [hour(t(ii)) test_matrix(p_max_idx,:) p_max];
+      
+      
+        
+    else %%%if == 0
+       
+      opt_angle(ii,:) = [hour(t(ii)) 0 0 0];
+    end
+    
+end
+
+
