@@ -34,7 +34,6 @@ q_total = integral(fun,0,inf);
 
 q_xray =  integral(fun,0,.1e-7);
 
-
 %%%%Integrating Planck's law in visible spectrum
 q_vis = integral(fun,3.8e-7,7.5e-7);
 

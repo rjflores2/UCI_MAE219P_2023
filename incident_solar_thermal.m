@@ -26,7 +26,7 @@ u = 0.01; %kW/m^2*K - Flat Plate
 mflow = 0.064; %kg/s, converted from 1 GPM
 
 %%%Water temperature in
-T_in = 40; %%%Degrees C
+T_in = 80+273.15; %%%Degrees K
 
 %%% Stefan-Boltzmann constant
 sb = 5.67e-8/1000; %kW/(m^2*K^4)
@@ -119,12 +119,12 @@ for ii = 1:size(test_matrix,1)
             fun = @(T_out) mflow*cp*(T_in - T_out) ...
                 + p(i) ....
                 - sb*(((T_in+T_out)/2)^4) ...
-                - 2*u*(((T_in+T_out)/2)-20);
+                - 2*u*(((T_in+T_out)/2)-293.15);
            %%%Solving for temperature (C)
             Temp_out(i) = fzero(fun,T_in+1);
              
             %%%Energy Gain (kW)
-            water_energy_gain(i) = -mflow*cp*(T_in - Temp_out(i));
+            water_energy_gain(i) = mflow*cp*(Temp_out(i) - T_in);
         end
 
 
@@ -161,6 +161,6 @@ for ii = 1:size(p_rec,1)
 end
 
 %% Water
-avg_temp = mean(Temp_out(Temp_out>0))
+avg_temp = mean(Temp_out(Temp_out>0)) - 273 %Celcius
 
 annual_efficiency = sum(water_energy_gain)/sum(p)
