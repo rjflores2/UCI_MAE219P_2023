@@ -67,7 +67,7 @@ for ii = 1:size(test_matrix,1)
         betz(jj) = betz_limit*(1/2)*density*v_design^3*r_i*(blade_length/disc)*2*pi;
 
         %%% Building lift/drag torque to power equation
-        alpha(jj) = blade_number*rotate_speed*(1/2)*w_i^2*r_i*(blade_length/disc)*(CL*2/3*v_design - CD*r_i*rotate_speed);
+        alpha(jj) = blade_number*rotate_speed*(1/2)*density*w_i^2*r_i*(blade_length/disc)*(CL*2/3*v_design - CD*r_i*rotate_speed);
         %%%Chord length
         k(jj) = betz(jj)/alpha(jj);
     
