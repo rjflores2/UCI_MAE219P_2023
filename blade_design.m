@@ -13,10 +13,10 @@ density = 1.225; %(kg/m^3)
 design_power = 10e6; %(Watts)
 
 %%% Design tip speed
-tip_speed = 15; %Use 8
+tip_speed = 8; %Use 8
 
 %%% blade number
-blade_number = 4;
+blade_number = 3;
 
 %%% design efficiency
 design_efficiency = .9;
@@ -51,6 +51,29 @@ for ii = 1:size(test_matrix,1)
     %%%rotational speed (radians/second)
     rotate_speed = tip_speed*v_design/blade_length;
 
-%% 
+    %%%Coefficients of lift/drag
+    CL = 0.6 + 0.066*aoa - 0.001*aoa^2 - 3.8e-5*aoa^3;
+    CD = .12 - .11*cosd(aoa);
 
+    %% Discretize and evalute the blade
+    for jj = 1:disc
+        %%% find the average distance from the hub for r_i
+        r_i = blade_length/disc*(jj-1) +blade_length/disc/2;
+
+        %%% find the apparent wind speed
+        w_i = ((r_i*rotate_speed)^2 + (v_design*2/3)^2)^(1/2);
+
+        %%% Find local betz limit
+        betz(jj) = betz_limit*(1/2)*density*v_design^3*r_i*(blade_length/disc)*2*pi;
+
+        %%% Building lift/drag torque to power equation
+        alpha(jj) = blade_number*rotate_speed*(1/2)*w_i^2*r_i*(blade_length/disc)*(CL*2/3*v_design - CD*r_i*rotate_speed);
+        %%%Chord length
+        k(jj) = betz(jj)/alpha(jj);
+    
+    
+    end
 end
+
+figure
+plot(k)
